@@ -1,73 +1,150 @@
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="/logout">
-          Logout
-        </a>
-      </div>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h2>Welcome <span class="member-name"></span></h2>
-      </div>
-    </div>
+{{!-- Navigation bar --}}
+<nav class="navbar navbar-dark bg-dark">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="#">
+      <img src="images/BT.png" alt="logo" width="40px" height="40px">
+    </a>
+    <a id="logoutLink" class="navbar-brand" href="/logout">
+      Logout
+    </a>
   </div>
+  {{!-- <div class="container-fluid">
+    
+  </div> --}}
+</nav>
 
-  <div class="budgetContainer">
-    <div class="col-md-4">
-      <form class="col-md-6">
-        <label for="fname">Your Budget:</label><br>
-        <input type="text" id="budget" placeholder="$"><br>
-        <input type="submit" value="Submit">
-      </form>
-      <form class="col-md-6">
-        <label for="fname">Budget left:</label><br>
-        <input type="text" id="budget" placeholder="$"><br>
-      </form>
-      
-      <div class="chartContainer">
-        <div class="col-md-12">
-          <p>in here we will have a chart to summarize our
-            spending ( the position of this container should be right below you budget) </p>
+{{!-- Main Section --}}
+<main>
+  <div class="container-fluid main-box">
+    {{!-- Welcome User --}}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="hi-user">Welcome <span class="member-name"></span></h2>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Add expenses
-    </button>
-<!-- enter the amount you have spend -->
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">$</span>
+    {{!-- Total Budget and Budget Left --}}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h1>$ <span id="total-budget"> {{data.userBudget}}</span></h1>
+           
+                  
+                  
+          <p>Total Budget</p>
+          <div class="dropdown">
+            <button class="btnCustom btnCustom-default dropdown-toggle align-baseline" type="button" id="editDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              edit
+            </button>
+              
+            <div class="dropdown-menu" onClick="event.stopPropagation();" aria-labelledby="editDropDown">
+              <div class="form-group">
+                <label for="budget">Enter your budget</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <span class="input-group-text" id="inputGroup-sizing-default dollar-sign">$</span>
+                  </div>
+                  <input type="text" class="form-control" id="budget" aria-label="$" aria-describedby="dollar-sign">
+                </div>
+                <button type="submit" id="save-budget" class="btn expBtn"><span>Save</span></button>
+                <button type="submit" id="close-budget" class="btn expBtn"><span>Cancel</span></button>
+              </div>
+            </div>
+          </div>
         </div>
-        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-        <div class="input-group-append">
-          <span class="input-group-text">.00</span>
+
+        <div class="col-md-3 col-md-offset-3">
+          <h1> $<span id="budget-left"></span></h1>
+
+          <p>Budget Left</p>
         </div>
       </div>
-      <!-- enter the description on what you have spend on -->
-      <div class="input-group input-group-sm mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-sm">Description</span>
+      <hr>
+    </div>
+
+    <div class="container second-row">
+      <div class="row">
+
+        {{!-- Chart --}}
+        <div class="col-md-8">
+          <figure class="highcharts-figure">
+            <div id="chart-container"></div>
+          </figure>
         </div>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-      </div>
-      <!-- select the category -->
-      <div class="form-group">
-        <label for="exampleFormControlSelect1">Example select</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>Grocery</option>
-          <option>Fuel</option>
-          <option>Utility</option>
-          <option>Cloths</option>
-          <option>Entertainment</option>
-        </select>
+
+        {{!-- Add Expense Dropdown Menu Button --}}
+        <div class="col-md-4 dd-box">
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Add New Expense
+            </button>
+              
+            <div class="dropdown-menu spendingInput" onClick="event.stopPropagation();" aria-labelledby="dropdownMenuButton">
+              <div class="form-group">
+                {{!-- Amount Spent field --}}
+                <label for="amount">Amount</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <span class="input-group-text" id="inputGroup-sizing-default dollar-sign">$</span>
+                  </div>
+                  <input type="text" class="form-control" id="amount" aria-label="$" aria-describedby="dollar-sign">
+                </div>
+                
+                {{!-- Description field --}}
+                <label for="amount">Description</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="amount">
+                </div>
+
+                {{!-- Category Dropdown --}}
+                <label for="category-menu">Category</label>
+                <select class="form-control" id="category-menu">
+                  <option>--- choose one ---</option>
+                  {{#each categories}}
+                  <option> {{categories}} </option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <button type="submit" id="save-exp" class="btn expBtn"><span>Save</span></button>
+              <button type="submit" id="close-exp" class="btn expBtn"><span>Cancel</span></button>
+            </div>
       </div>
     </div>
+
   </div>
+</main>
+
+
+
+{{!-- <div class="spendingInput col-md-8">
+  <form>
+    <div class="form-group">
+      <label
+        for="exampleFormControlSelect1">category</label>
+      <select class="form-control"
+        id="exampleFormControlSelect1">
+        {{#each categories}}
+        <option> {{categories}} </option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="form-group">
+      <label
+        for="exampleFormControlInput1">Description</label>
+      <input type="text" class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="Description">
+    </div>
+    <div class="form-group">
+      <label
+        for="exampleFormControlTextarea1">amount</label>
+      <input type="text" class="form-control"
+        id="exampleFormControlTextarea1"></input>
+    </div>
+    <button type="button"
+      class="btn btn-primary">submit</button>
+  </form>
+</div> --}}
